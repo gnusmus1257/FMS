@@ -15,9 +15,11 @@ namespace BusinessLogic.Services
             _client = client;
         }
 
-        public float TransferOfCurrency(float value, Currency fromWhat, Currency inWhich)
+        public double TransferOfCurrency(double value, Currency fromWhat, Currency inWhich)
         {
-            throw new System.NotImplementedException();
+            return fromWhat == Currency.BelarusianRuble
+                ? TransferOfCurrencyFromBelRub(value, fromWhat, inWhich)
+                : TransferOfCurrencyToBelRub(value, fromWhat, inWhich);
         }
 
         public Rate GetRate(Currency currency)
@@ -30,6 +32,19 @@ namespace BusinessLogic.Services
         public void Dispose()
         {
             _client?.Dispose();
+        }
+
+        private double TransferOfCurrencyFromBelRub(double value, Currency fromWhat, Currency inWhich)
+        {
+            var rate = GetRate(inWhich);
+            return value / rate.CurOfficialRate * rate.CurScale;
+
+        }
+
+        private double TransferOfCurrencyToBelRub(double value, Currency fromWhat, Currency inWhich)
+        {
+            var rate = GetRate(fromWhat);
+            return value / rate.CurScale * rate.CurOfficialRate;
         }
     }
 }

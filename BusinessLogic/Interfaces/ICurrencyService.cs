@@ -6,7 +6,7 @@ namespace BusinessLogic.Interfaces
 {
     public interface ICurrencyService : IDisposable
     {
-        float TransferOfCurrency(float value, Currency fromWhat, Currency inWhich);
+        double TransferOfCurrency(double value, Currency fromWhat, Currency inWhich);
         Rate GetRate(Currency currency);
     }
 }

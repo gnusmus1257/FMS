@@ -18,16 +18,60 @@ namespace UnitTest.BussinesLogic
     public class CurrencyServiceTest
     {
         [Fact]
-        public void TransferOfCurrency_ReturnExpectedValue()
+        public void TransferOfCurrency_FromBelRub_ReturnExpectedValue()
         {
             //arrange
-            const float value = 1.05F;
-            const int expectedResult = 10;
-            var mockClient = new Mock<HttpClient>();
-            var currencyService = new CurrencyService(mockClient.Object);
+            const float value = 1;
+            const double expectedResult = 33;
+            var expectedRate = new Rate
+            {
+                CurId = (int) Currency.Dollar,
+                CurName = "Доллар США",
+                Date = DateTimeOffset.Now,
+                CurScale = 100,
+                CurOfficialRate = 3,
+                CurAbbreviation = "USD"
+            };
+
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns(Task.FromResult(GetHttpResponseMessage(expectedRate)));
+            var currencyService = new CurrencyService(new HttpClient(mockHttpMessageHandler.Object));
 
             //act
-            var actual = currencyService.TransferOfCurrency(value, Currency.BelarusianRuble, Currency.RussianRuble);
+            var actual = currencyService.TransferOfCurrency(value, Currency.BelarusianRuble, Currency.Dollar);
+
+            //assert
+            Assert.Equal(Math.Round(expectedResult), Math.Round(actual));
+        }
+
+        [Fact]
+        public void TransferOfCurrency_ToBelRub_ReturnExpectedValue()
+        {
+            //arrange
+            const float value = 10;
+            const int expectedResult = 20;
+            var expectedRate = new Rate
+            {
+                CurId = (int) Currency.Dollar,
+                CurName = "Доллар США",
+                Date = DateTimeOffset.Now,
+                CurScale = 1,
+                CurOfficialRate = 2,
+                CurAbbreviation = "USD"
+            };
+
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns(Task.FromResult(GetHttpResponseMessage(expectedRate)));
+            var currencyService = new CurrencyService(new HttpClient(mockHttpMessageHandler.Object));
+
+            //act
+            var actual = currencyService.TransferOfCurrency(value, Currency.Dollar, Currency.BelarusianRuble);
 
             //assert
             Assert.Equal(expectedResult, actual);

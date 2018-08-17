@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Models;
+using Models.DatabaseModels;
 using Repository.Interfaces;
 using Repository.Repository;
 

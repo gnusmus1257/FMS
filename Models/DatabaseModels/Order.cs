@@ -19,7 +19,7 @@ namespace Models.DatabaseModels
 
         private double GetDealerInterest()
         {
-            return DealerInterestInPercents != null && DealerInterestInPercents != 0
+            return DealerInterestInPercents != 0
                 ? Coast / 100 * (double) DealerInterestInPercents
                 : DealerInterestInCurrency;
         }

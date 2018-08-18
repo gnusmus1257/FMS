@@ -4,4 +4,5 @@ namespace Models.Enams
     {
         Percentages,
         Currency
+    }
 }

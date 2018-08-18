@@ -13,7 +13,7 @@ namespace Models.DatabaseModels
         public double PrimeCost { get; set; }
         public decimal DealerInterestInPercents { private get; set; }
         public double DealerInterestInCurrency { private get; set; }
-        public double DealerInterest { get; set; }
+        public double DealerInterest => GetDealerInterest();
         public Enams.Currency Currency { get; set; }
         public Enams.OrderStatus Status { get; set; }
 

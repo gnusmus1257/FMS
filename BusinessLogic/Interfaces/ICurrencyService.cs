@@ -10,7 +10,8 @@ namespace BusinessLogic.Interfaces
     {
         double TransferOfCurrency(double value, Currency fromWhat, Currency inWhich);
         Rate GetRate(Currency currency);
+        Rate GetRate(Currency currency, DateTime date);
         double GetProfitability(List<Order> orders);
-        double GetNetProfit(List<Order> orders);
+        double GetNetProfit(IEnumerable<Order> orders);
     }
 }

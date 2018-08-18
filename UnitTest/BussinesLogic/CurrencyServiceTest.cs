@@ -112,6 +112,40 @@ namespace UnitTest.BussinesLogic
         }
 
         [Fact]
+        public void GetRate_WithDate_ReturnExpectedValue()
+        {
+            //arrange
+            var expectedDate = DateTime.Now;
+            var actual = string.Empty;
+            var expectedRate = new Rate
+            {
+                CurId = (int) Currency.Dollar,
+                CurName = "Доллар США",
+                Date = DateTimeOffset.Now,
+                CurScale = 1,
+                CurOfficialRate = 2,
+                CurAbbreviation = "USD"
+            };
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns<HttpRequestMessage, CancellationToken>((a, b) =>
+                {
+                    actual = a.RequestUri.Query;
+                    return Task.FromResult(GetHttpResponseMessage(expectedRate));
+                });
+            var currencyService = new CurrencyService(new HttpClient(mockHttpMessageHandler.Object));
+
+            //act
+            var result = currencyService.GetRate(Currency.Dollar, expectedDate);
+
+            //assert
+            Assert.Contains(expectedDate.ToString("yyyy/d/M"), actual);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public void Dispose_ExpectedException()
         {
             //arrange

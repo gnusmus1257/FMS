@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Repository.Repository
+namespace Web.Repository
 {
     public interface IRepository<TEntity>: IDisposable where TEntity : class
     {

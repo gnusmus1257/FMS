@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models;
 using Models.DatabaseModels;
 
-namespace Repository.Repository
+namespace Web.Repository
 {
     public class ApplicationContext : DbContext
     {
@@ -11,9 +10,9 @@ namespace Repository.Repository
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+            : base(options)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=FMS;Integrated Security=true;");
         }
     }
 }

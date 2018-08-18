@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Models.DatabaseModels;
-using Repository.Interfaces;
-using Repository.Repository;
+using Web.Interfaces;
+using Web.Repository;
 
-namespace Repository.Services
+namespace Web.Services
 {
     public class CustomerService : ICustomerService
     {

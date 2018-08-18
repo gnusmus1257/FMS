@@ -38,7 +38,6 @@ namespace BusinessLogic.Services
         {
             var rate = GetRate(inWhich);
             return value / rate.CurOfficialRate * rate.CurScale;
-
         }
 
         private double TransferOfCurrencyToBelRub(double value, Currency fromWhat, Currency inWhich)
